@@ -2,8 +2,7 @@
 
 ## 概述
 
-二叉树作为一个基础的数据结构，遍历算法作为一个基础的算法，两者结合当然是经典的组合了。
-很多题目都会有 ta 的身影，有直接问二叉树的遍历的，有间接问的。
+二叉树作为一个基础的数据结构，遍历算法作为一个基础的算法，两者结合当然是经典的组合了。很多题目都会有 ta 的身影，有直接问二叉树的遍历的，有间接问的。比如要你找到树中满足条件的节点，就是间接考察树的遍历，因为你要找到树中满足条件的点，就需要进行遍历。
 
 > 你如果掌握了二叉树的遍历，那么也许其他复杂的树对于你来说也并不遥远了
 
@@ -14,11 +13,13 @@ DFS 都可以使用栈来简化操作，并且其实树本身是一种递归的�
 
 DFS 图解：
 
-![binary-tree-traversal-dfs](../assets/thinkings/binary-tree-traversal-dfs.gif)
+![binary-tree-traversal-dfs](https://tva1.sinaimg.cn/large/007S8ZIlly1ghlui7vcmwg30dw0dw3yl.gif)
 
 (图片来自 https://github.com/trekhleb/javascript-algorithms/tree/master/src/algorithms/tree/depth-first-search)
 
 BFS 的关键点在于如何记录每一层次是否遍历完成， 我们可以用一个标识位来表式当前层的结束。
+
+首先不管是前中还是后序遍历，变的只是根节点的位置， 左右节点的顺序永远是先左后右。 比如前序遍历就是根在前面，即根左右。中序就是根在中间，即左根右。后序就是根在后面，即左右根。
 
 下面我们依次讲解：
 
@@ -42,7 +43,7 @@ BFS 的关键点在于如何记录每一层次是否遍历完成， 我们可以
 如果从这个角度出发去写的话，算法就不一样了。从上向下我们可以直接递归访问即可，从下向上我们只需要借助栈也可以轻易做到。
 整个过程大概是这样：
 
-![binary-tree-traversal-preorder](../assets/thinkings/binary-tree-traversal-preorder.png)
+![binary-tree-traversal-preorder](https://tva1.sinaimg.cn/large/007S8ZIlly1ghlui8rph4j30n30azaar.jpg)
 
 这种思路解题有点像我总结过的一个解题思路`backtrack` - 回溯法。这种思路有一个好处就是
 可以`统一三种遍历的思路`. 这个很重要，如果不了解的朋友，希望能够记住这一点。
@@ -85,7 +86,7 @@ BFS 的关键点在于如何记录每一层次是否遍历完成， 我们可以
 
 层次遍历的关键点在于如何记录每一层次是否遍历完成， 我们可以用一个标识位来表式当前层的结束。
 
-![binary-tree-traversal-bfs](../assets/thinkings/binary-tree-traversal-bfs.gif)
+![binary-tree-traversal-bfs](https://tva1.sinaimg.cn/large/007S8ZIlly1ghluic79lag30dw0dw3yl.gif)
 
 (图片来自 https://github.com/trekhleb/javascript-algorithms/tree/master/src/algorithms/tree/breadth-first-search)
 
@@ -103,7 +104,7 @@ BFS 的关键点在于如何记录每一层次是否遍历完成， 我们可以
 
 ## 双色标记法
 
-我们直到垃圾回收算法中，有一种算法叫三色标记法。 即：
+我们知道垃圾回收算法中，有一种算法叫三色标记法。 即：
 
 - 用白色表示尚未访问
 - 灰色表示尚未完全访问子节点
@@ -137,11 +138,15 @@ class Solution:
         return res
 ```
 
-如要实现前序、后序遍历，只需要调整左右子节点的入栈顺序即可。
+可以看出，实现上 WHITE 就表示的是递归中的第一次进入过程，Gray 则表示递归中的从叶子节点返回的过程。 因此这种迭代的写法更接近递归写法的本质。
+
+如要实现前序、后序遍历，只需要调整左右子节点的入栈顺序即可。可以看出使用三色标记法， 其写法类似递归的形式，因此便于记忆和书写，缺点是使用了额外的内存空间。不过这个额外的空间是线性的，影响倒是不大。
+
+> 虽然递归也是额外的线性时间，但是递归的栈开销还是比一个 0，1 变量开销大的。
 
 ## Morris 遍历
 
-我们可以使用一种叫做 Morris 遍历的方法，既不使用递归也不借助于栈。从而在$O(1)$时间完成这个过程。
+我们可以使用一种叫做 Morris 遍历的方法，既不使用递归也不借助于栈。从而在 $O(1)$ 空间完成这个过程。
 
 ```python
 def MorrisTraversal(root):
@@ -182,3 +187,15 @@ def MorrisTraversal(root):
 ```
 
 参考： [what-is-morris-traversal](https://www.educative.io/edpresso/what-is-morris-traversal)
+
+## 相关题目
+
+- [lowest-common-ancestor-of-a-binary-tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+- [binary-tree-level-order-traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+- [binary-tree-zigzag-level-order-traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+- [validate-binary-search-tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+- [maximum-depth-of-binary-tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+- [balanced-binary-tree](https://leetcode-cn.com/problems/balanced-binary-tree/)
+- [binary-tree-level-order-traversal-ii](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
+- [binary-tree-maximum-path-sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)
+- [insert-into-a-binary-search-tree](https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/)
